@@ -13,7 +13,7 @@ end
 function results = eval(path)
 cd(path);
 graphs = dir('maxcut*');
-results = zeros(size(graphs,1), 8);
+results = zeros(size(graphs,1), 9);
 index = 1;
 for graph = graphs'
     index
@@ -42,21 +42,21 @@ for graph = graphs'
     end
     totalTime = time+time2
     [nodes, edgeProb, maxWeight, id] = getInfo(graph.name);
-    results(index,:) = [avg result time time2 nodes edgeProb maxWeight id];
+    results(index,:) = [avg result time time2 nodes edgeProb maxWeight nnz(C) id];
     index = index + 1;
 end
 end
 
-function average = roundingGoeWil(vecotrs, graph, iterations)
-dim = size(vecotrs,1);
+function average = roundingGoeWil(vectors, graph, iterations)
+dim = size(vectors,1);
 sum = 0;
 for itt = 1:iterations
     plane = normrnd(0,1,[dim,1]);
     plane = plane/norm(plane);
     S = [];
     S2 = [];
-    for i = 1:size(vecotrs,2) %round
-       vector = vecotrs(:,i);
+    for i = 1:size(vectors,2) %round
+       vector = vectors(:,i);
        if vector'*plane > 0
            S = [S i];
        else

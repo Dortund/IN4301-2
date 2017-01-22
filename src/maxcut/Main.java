@@ -5,7 +5,7 @@ public class Main {
 	public static void main(String[] args) {
 		int amount = 10;
 		int nodes = 100;
-		int maxWeight = 40;
+		int maxWeight = 25;
 		double[] edgeProbability = {0.5, 1};
 		
 		for (double prob : edgeProbability) {
