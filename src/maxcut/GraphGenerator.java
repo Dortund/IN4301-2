@@ -117,6 +117,8 @@ public class GraphGenerator {
 		//construct the filename
 		String filename = getFilename();
 		
+		System.out.println("Writing: " + filename);
+		
 		//write the file
 		PrintWriter out = null;
 		try {
@@ -143,6 +145,6 @@ public class GraphGenerator {
 		if (edge.length() > 5)
 			edge = edge.substring(0, 6);
 		String id = String.format("%02d", nr);
-		return "maxcut_"+nodes+"_"+edge+"_"+maxWeight+"_instance_"+id; 
+		return "graphs/maxcut_"+nodes+"_"+edge+"_"+maxWeight+"_instance_"+id; 
 	}
 }

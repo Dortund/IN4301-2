@@ -83,3 +83,9 @@ slprj/
 
 # Session info
 octave-workspace
+
+
+
+
+## Ignore our generated graphs, they are quick to generate and way too many
+maxcut*_instance_*

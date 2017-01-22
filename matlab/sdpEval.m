@@ -1,8 +1,24 @@
 path = 'D:\Gebruikers\nomen\Documents\IN4301\IN4301-2\graphs';
+results = eval(path)
+filename = 'results';
+maxIndex = 100;
+for index = 1:maxIndex
+    filename = strcat(path,'\results\results',num2str(index),'.txt');
+    if ~exist(filename, 'file')
+        dlmwrite(filename,results)
+        break;
+    end
+end
+
+function results = eval(path)
 cd(path);
 graphs = dir('maxcut*');
+results = zeros(size(graphs,1), 8);
+index = 1;
 for graph = graphs'
-    C = dlmread(graph.name)
+    index
+    graph.name
+    C = dlmread(graph.name);
     v = length(C);
     options = sdpsettings('solver','sedumi');
     options.verbose = 0; %Produce no output during calculation
@@ -11,20 +27,24 @@ for graph = graphs'
     objective = 0.5*trace(C' * (1-A));
     constraints = [A >= 0, diag(A) == 1];
     sol = optimize(constraints, -objective, options);
-    Z = double(A)
-    result = double(objective)
-    time = sol.solvertime
+    Z = double(A);
+    result = double(objective);
+    time = sol.solvertime;
     time2 = 0;
     [R,p] = chol(double(A));
     % Do that randomized thingie to get other bound
     if p == 0
-        tic    
-        avg = roundingGoeWil(R, C, 100)
-        time2 = toc
+        tic;
+        avg = roundingGoeWil(R, C, 100);
+        time2 = toc;
     else
         error = 'Non semidefinite positve matrix'
     end
     totalTime = time+time2
+    [nodes, edgeProb, maxWeight, id] = getInfo(graph.name);
+    results(index,:) = [avg result time time2 nodes edgeProb maxWeight id];
+    index = index + 1;
+end
 end
 
 function average = roundingGoeWil(vecotrs, graph, iterations)
@@ -56,4 +76,12 @@ for itt = 1:iterations
     sum = sum + cut;
 end
 average = sum / iterations;
+end
+
+function [nodes, edgeProb, maxWeight, id] = getInfo(name)
+C = strsplit(name,'_');
+nodes = str2double(C(1,2));
+edgeProb = str2double(C(1,3))/10;
+maxWeight = str2double(C(1,4));
+id = str2double(C(1,6));
 end

@@ -3,9 +3,9 @@ package maxcut;
 public class Main {
 
 	public static void main(String[] args) {
-		int amount = 1;
-		int nodes = 5;
-		int maxWeight = 5;
+		int amount = 10;
+		int nodes = 100;
+		int maxWeight = 40;
 		double[] edgeProbability = {0.5, 1};
 		
 		for (double prob : edgeProbability) {
